@@ -16,7 +16,7 @@ class TestDagIntegrity(unittest.TestCase):
         DAGS_DIR = os.getenv('INPUT_DAGPATHS')
         os.environ['PYTHONPATH'] = f"{os.getenv('PYTHONPATH')}:{DAGS_DIR}"
         logging.info("DAGs dir : {}".format(DAGS_DIR))
-        self.dagbag = DagBag(dag_folder = DAGS_DIR, include_smart_sensor=True, include_examples = False)
+        self.dagbag = DagBag(dag_folder = DAGS_DIR, include_examples = False)
 
     def test_import_dags(self):
         self.assertFalse(
