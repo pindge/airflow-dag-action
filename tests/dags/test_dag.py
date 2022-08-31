@@ -2,7 +2,10 @@ from airflow import DAG
 from airflow.models import Variable
 from airflow.utils.dates import days_ago
 from airflow.operators.python_operator import PythonOperator
-
+from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import (
+    KubernetesPodOperator,
+)
+from shared_var import image
 import numpy as np
 import pandas as pd
 from datetime import timedelta
@@ -35,7 +38,6 @@ dag = DAG(
 
 def test_import_module():
     import prettyprint
-    from shared_var import image
     return True
 
 
@@ -44,6 +46,22 @@ def test_access_var():
     print("my var message : {}".format(my_var))
     return ("Access Var Success!")
 
+r_value = '{"foo": "bar"\n, "buzz": 2}'
+
+
+var_import =    KubernetesPodOperator(
+                    namespace="default",
+                    image=image,
+                    cmds=["bash", "-cx"],
+                    arguments=["echo '{}' > /airflow/xcom/return.json".format(r_value)],
+                    name="test-k8s-xcom-sidecar",
+                    task_id="task-test",
+                    labels={"dag": "test-xcom-sidecar"},
+                    get_logs=True,
+                    do_xcom_push=True,
+                    is_delete_operator_pod=True,
+                    log_events_on_failure=True,
+                )
 
 access_var = PythonOperator(
                     task_id = 'test_access_var',
