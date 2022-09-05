@@ -23,7 +23,7 @@ default_args = {
     'email_on_retry' : False,
     'retries' : 0,
     'retry_delay' : timedelta(minutes=5),
-    'test_conn_id': "test_con_id",
+    'ssh_conn_id':'test_conn'
 }
 
 
@@ -82,7 +82,6 @@ k8s_image = KubernetesPodOperator(
             )
 
 test_conn = SSHOperator(
-    ssh_conn_id='test_conn',
     task_id='open_tunnel_to_SERVER',
     command='ls -al',
     dag=dag
