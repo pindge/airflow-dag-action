@@ -20,6 +20,7 @@ Workflows `.github/workflows/main.yml`
     requirementsFile: tests/requirements.txt
     dagPaths: tests/dags
     varFile: tests/var.json
+    connFile: tests/conns.json
     accessToken: ${{ secrets.GITHUB_TOKEN }}
 ```
 **Result**

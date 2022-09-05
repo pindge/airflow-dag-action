@@ -1,0 +1,7 @@
+{
+    "test_conn": {
+        "conn_type": "ssh",
+        "login": "USERNAME",
+        "password": "PASS"
+      }
+}
