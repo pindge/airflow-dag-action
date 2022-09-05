@@ -5,7 +5,8 @@ from airflow.operators.python_operator import PythonOperator
 from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import (
     KubernetesPodOperator,
 )
-
+from airflow.contrib.operators.ssh_operator import SSHOperator
+from airflow.contrib.hooks.ssh_hook import SSHHook
 from shared_var import image
 import numpy as np
 import pandas as pd
@@ -22,6 +23,7 @@ default_args = {
     'email_on_retry' : False,
     'retries' : 0,
     'retry_delay' : timedelta(minutes=5),
+    'test_conn_id': "test_con_id",
 }
 
 
@@ -79,4 +81,19 @@ k8s_image = KubernetesPodOperator(
                 dag=dag
             )
 
-access_var >> import_module >> k8s_image
+ssh_hook = SSHHook(
+    ssh_conn_id='test_conn',
+    keepalive_interval=60).get_tunnel(
+    int('25'),
+    remote_host='127.0.0.1',
+    local_port=int('25')
+).start()
+
+ssh_operator = SSHOperator(
+    ssh_hook=ssh_hook,
+    task_id='open_tunnel_to_SERVER',
+    command='ls -al',
+    dag=dag
+)
+
+access_var >> import_module >> k8s_image >> ssh_operator
