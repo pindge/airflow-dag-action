@@ -81,19 +81,17 @@ k8s_image = KubernetesPodOperator(
                 dag=dag
             )
 
-ssh_hook = SSHHook(
-    ssh_conn_id='test_conn',
-    keepalive_interval=60).get_tunnel(
-    int('25'),
-    remote_host='127.0.0.1',
-    local_port=int('25')
-).start()
-
-ssh_operator = SSHOperator(
-    ssh_hook=ssh_hook,
+test_conn = SSHOperator(
+    ssh_hook= SSHHook(
+        ssh_conn_id='test_conn',
+        keepalive_interval=60).get_tunnel(
+        int('25'),
+        remote_host='127.0.0.1',
+        local_port=int('25')
+    ),
     task_id='open_tunnel_to_SERVER',
     command='ls -al',
     dag=dag
 )
 
-access_var >> import_module >> k8s_image >> ssh_operator
+access_var >> import_module >> k8s_image >> test_conn
