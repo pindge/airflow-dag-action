@@ -1,2 +1,1 @@
 prettyprint
-apache-airflow-providers-ssh
