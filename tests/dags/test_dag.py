@@ -5,8 +5,7 @@ from airflow.operators.python_operator import PythonOperator
 from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import (
     KubernetesPodOperator,
 )
-from airflow.contrib.operators.ssh_operator import SSHOperator
-from airflow.contrib.hooks.ssh_hook import SSHHook
+from airflow.hooks.base_hook import BaseHook
 from shared_var import image
 import numpy as np
 import pandas as pd
@@ -81,10 +80,6 @@ k8s_image = KubernetesPodOperator(
                 dag=dag
             )
 
-test_conn = SSHOperator(
-    task_id='open_tunnel_to_SERVER',
-    command='ls -al',
-    dag=dag
-)
+BaseHook.get_connection("test_conn")
 
-access_var >> import_module >> k8s_image >> test_conn
+access_var >> import_module >> k8s_image
