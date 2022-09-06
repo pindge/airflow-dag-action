@@ -1,10 +1,10 @@
 from airflow import DAG
 from airflow.models import Variable
-from airflow.operators.python_operator import PythonOperator
+from airflow.operators.python import PythonOperator
 from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import (
     KubernetesPodOperator,
 )
-from airflow.hooks.base_hook import BaseHook
+from airflow.hooks.base import BaseHook
 from shared_var import image
 import numpy as np
 import pandas as pd
@@ -33,8 +33,8 @@ dag = DAG(
     description = 'sample dag to test dag',
     default_args = default_args,
     access_control = {
-        'DE' : {'can_dag_read', 'can_dag_edit'},
-        'BI' : {'can_dag_read'}
+        'DE' : {'can_read', 'can_edit'},
+        'BI' : {'can_read'}
     },
     schedule_interval = timedelta(days = 1)
 )
