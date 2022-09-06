@@ -10,6 +10,10 @@ inputs:
     description: 'DAG dir to validate'
     required: false
     default: "dags"
+  pluginPaths:
+    description: 'Plugin dir to validate'
+    required: false
+    default: "plugins"
   requirementsFile:
     description: 'Path to requirements file that airflow use to run the DAG files.'
     required: false
@@ -18,10 +22,17 @@ inputs:
     description: 'Path to var.json file that will be used to set Variable on airflow'
     required: false
     default: ""
+<<<<<<< HEAD
   connFile:
     description: 'Path to conns.json file that will be used to set Connections on airflow'
     required: false
     default: ""
+=======
+  loadExamples:
+    description: 'Boolean flag for whether to load example dag or not'
+    required: false
+    default: "False"
+>>>>>>> b8ace7a29f43552a28908e891a9a07940419d5f0
   accessToken:
     description: 'Repo access token'
     required: true
@@ -38,5 +49,10 @@ runs:
     - ${{ inputs.requirementsFile }}
     - ${{ inputs.dagPaths }}
     - ${{ inputs.varFile }}
+<<<<<<< HEAD
     - ${{ inputs.connFile }}
+=======
+    - ${{ inputs.pluginPaths }}
+    - ${{ inputs.loadExamples }}
+>>>>>>> b8ace7a29f43552a28908e891a9a07940419d5f0
     - ${{ inputs.accessToken }}

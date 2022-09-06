@@ -10,17 +10,20 @@ Want to test airflow DAGs on folder tests/dags, requirements file in tests/requi
 
 - Provide your dependency files `requirements.txt` to test your python dependencies
 - Your `var.json` to test your variables
+- Your `conn.json` to test your connections
 - And path to your DAGs directory to test import your DAGs with supplied dependencies and variables
 
 Workflows `.github/workflows/main.yml`
 ```yml
 - name: 'Validate DAGs'
-  uses: jayamanikharyono/airflow-dag-action@v2.0
+  uses: jayamanikharyono/airflow-dag-action@v2.3
   with:
     requirementsFile: tests/requirements.txt
     dagPaths: tests/dags
     varFile: tests/var.json
     connFile: tests/conns.json
+    pluginPaths: tests/plugins
+    loadExample: False
     accessToken: ${{ secrets.GITHUB_TOKEN }}
 ```
 **Result**
@@ -29,7 +32,7 @@ Workflows `.github/workflows/main.yml`
 ### Todo
 - Output Validation Result to PR comments ✅
 - Upgrading to Airflow 2.0+ ✅
-- Add Airflow Plugins Validation
+- Add Airflow Plugins Validation ✅
 
 
 #### Contributions
