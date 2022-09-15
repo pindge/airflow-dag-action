@@ -20,8 +20,8 @@ export PYTHONPATH="${PYTHONPATH:+${PYTHONPATH}:}${PWD}/$2"
 export AIRFLOW__CORE__PLUGINS_FOLDER="${PWD}/$5"
 export AIRFLOW__CORE__LOAD_EXAMPLES="$6"
 
-airflow variables >> result.log
-airflow connections >> result.log
+airflow variables list >> result.log
+airflow connections list >> result.log
 airflow plugins >> result.log
 
 pytest dag_validation.py -s -q >> result.log
